@@ -1,6 +1,6 @@
 import { DatabaseClient } from './database';
 import { prisma } from '../../lib/prisma';
-import { Subscription, Note, User, UserWithSubscriptions, SubscriptionStatus } from 'types';
+import { Subscription, Note, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PortfolioType, PriceCache } from 'types';
 import { PrismaClient } from '@prisma/client';
 import { ServiceConfigStatus } from '../status/serviceConfigStatus';
 
@@ -192,6 +192,72 @@ export class SqlDatabaseService extends DatabaseClient {
       });
     },
   };
+
+  portfolio = {
+    findById: async (id: string) => {
+      return prisma.portfolio.findUnique({ where: { id } });
+    },
+    findByUserId: async (userId: string) => {
+      return prisma.portfolio.findMany({ 
+        where: { userId },
+        orderBy: { createdAt: 'desc' }
+      });
+    },
+    create: async (portfolio: Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>) => {
+      return prisma.portfolio.create({ data: portfolio });
+    },
+    update: async (id: string, portfolio: Partial<Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>>) => {
+      return prisma.portfolio.update({ 
+        where: { id }, 
+        data: portfolio 
+      });
+    },
+    delete: async (id: string) => {
+      await prisma.portfolio.delete({ where: { id } });
+    },
+    count: async (userId: string) => {
+      return prisma.portfolio.count({ where: { userId } });
+    },
+  };
+
+  holding = {
+    findById: async (id: string) => {
+      return prisma.holding.findUnique({ where: { id } });
+    },
+    findByPortfolioId: async (portfolioId: string) => {
+      return prisma.holding.findMany({ 
+        where: { portfolioId },
+        orderBy: { createdAt: 'desc' }
+      });
+    },
+    findBySymbol: async (portfolioId: string, symbol: string) => {
+      return prisma.holding.findUnique({
+        where: { portfolioId_symbol: { portfolioId, symbol } }
+      });
+    },
+    create: async (holding: Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>) => {
+      return prisma.holding.create({ data: holding });
+    },
+    update: async (id: string, holding: Partial<Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>>) => {
+      return prisma.holding.update({ 
+        where: { id }, 
+        data: holding 
+      });
+    },
+    delete: async (id: string) => {
+      await prisma.holding.delete({ where: { id } });
+    },
+    updatePrices: async (updates: { symbol: string; price: number }[]) => {
+      const updatePromises = updates.map(({ symbol, price }) =>
+        prisma.holding.updateMany({
+          where: { symbol },
+          data: { currentPrice: price }
+        })
+      );
+      await Promise.all(updatePromises);
+    },
+  };
+
   verificationToken = {
     create: async (data: { identifier: string; token: string; expires: Date }) => {
       await prisma.verificationToken.create({ data });
@@ -214,6 +280,42 @@ export class SqlDatabaseService extends DatabaseClient {
         where: { expires: { lt: now } },
       });
     },
+  };
+
+  priceCache = {
+    findBySymbol: async (symbol: string): Promise<PriceCache | null> => {
+      return prisma.priceCache.findUnique({
+        where: { symbol: symbol.toUpperCase() }
+      });
+    },
+    upsert: async (data: Omit<PriceCache, 'id' | 'createdAt'>): Promise<PriceCache> => {
+      return prisma.priceCache.upsert({
+        where: { symbol: data.symbol.toUpperCase() },
+        update: {
+          price: data.price,
+          change: data.change,
+          changePercent: data.changePercent,
+          volume: data.volume,
+          lastUpdated: data.lastUpdated
+        },
+        create: {
+          symbol: data.symbol.toUpperCase(),
+          price: data.price,
+          change: data.change,
+          changePercent: data.changePercent,
+          volume: data.volume,
+          lastUpdated: data.lastUpdated
+        }
+      });
+    },
+    deleteBySymbol: async (symbol: string): Promise<void> => {
+      await prisma.priceCache.delete({
+        where: { symbol: symbol.toUpperCase() }
+      });
+    },
+    deleteAll: async (): Promise<void> => {
+      await prisma.priceCache.deleteMany();
+    }
   };
   /**
    * Checks if the database service is properly configured and accessible.

@@ -18,7 +18,7 @@ model User {
   createdAt      DateTime       @default(now())
 
   subscription   Subscription?  @relation("UserSubscription")
-  notes          Note[]
+  portfolios     Portfolio[]
 
   verificationToken String? // Token for email verification
   emailVerified     Boolean @default(false) // Email verification status
@@ -34,13 +34,46 @@ model Subscription {
   createdAt  DateTime @default(now())
 }
 
-model Note {
-  id         String   @id @default(uuid())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  title      String
-  content    String
-  createdAt  DateTime @default(now())
+model Portfolio {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  description String?
+  type        PortfolioType @default(PERSONAL)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  holdings    Holding[]
+}
+
+model Holding {
+  id            String    @id @default(uuid())
+  portfolio     Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  portfolioId   String
+  
+  symbol        String    // Stock symbol (e.g., AAPL, TSLA)
+  shares        Decimal   @db.Decimal(18, 8)
+  costBasis     Decimal   @db.Decimal(18, 2) // Price per share when purchased
+  purchaseDate  DateTime
+  currentPrice  Decimal?  @db.Decimal(18, 2) // Latest market price
+  sector        String?   // Auto-populated from market data
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([portfolioId, symbol])
+}
+
+model PriceCache {
+  id          String   @id @default(uuid())
+  symbol      String   @unique
+  price       Decimal  @db.Decimal(18, 2)
+  change      Decimal  @db.Decimal(18, 2)
+  changePercent Decimal @db.Decimal(10, 4)
+  volume      BigInt
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model VerificationToken {
@@ -65,4 +98,11 @@ enum SubscriptionStatus {
 enum SubscriptionPlan {
   FREE
   PRO
+}
+
+enum PortfolioType {
+  PERSONAL
+  RETIREMENT
+  TAXABLE
+  OTHER
 }

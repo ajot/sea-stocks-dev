@@ -1,4 +1,4 @@
-# SeaNotes - Environment Variables
+# SeaStocks - Environment Variables
 # ====================================================
 # This file contains all the environment variables needed for the application.
 # Copy this file to .env and fill in your values before starting the application.
@@ -7,7 +7,7 @@
 # DATABASE CONFIGURATION
 # ====================
 # The database stores all user data, notes, subscription information, and application state
-# PostgreSQL is the only supported database provider in SeaNotes
+# PostgreSQL is the only supported database provider in SeaStocks
 DATABASE_PROVIDER=Postgres
 
 # Database connection string for Prisma ORM
@@ -121,6 +121,16 @@ DO_INFERENCE_API_KEY=             # Your DigitalOcean Inference API key
 # Client-side flag to enable DigitalOcean Gradient AI features in the UI
 # Set to 'true' when you want to enable AI-powered content generation
 NEXT_PUBLIC_DIGITALOCEAN_GRADIENTAI_ENABLED=true
+
+# ====================
+# MARKET DATA CONFIGURATION (Alpha Vantage)
+# ====================
+# Alpha Vantage provides real-time and historical stock market data
+# Used for fetching current stock prices and company information for portfolio tracking
+# Free tier: 5 API calls per minute, 100 calls per day
+# Get your free API key at: https://www.alphavantage.co/support/#api-key
+# In the app: Used by src/services/marketData/alphaVantageService.ts
+ALPHA_VANTAGE_API_KEY=            # Your Alpha Vantage API key (leave empty to use mock data)
 
 # Optional: Set logging level (default: info)
 # Controls the verbosity of application logs

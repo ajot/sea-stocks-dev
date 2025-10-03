@@ -1,4 +1,4 @@
-import { Note, Subscription, User, UserWithSubscriptions, SubscriptionStatus } from 'types';
+import { Note, Subscription, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PortfolioType, PriceCache } from 'types';
 import { ServiceConfigStatus, ConfigurableService } from '../status/serviceConfigStatus';
 
 export type DatabaseProvider = 'Postgres';
@@ -64,6 +64,23 @@ export abstract class DatabaseClient implements ConfigurableService {
     }) => Promise<Note[]>;
     count: (userId: string, search?: string) => Promise<number>;
   };
+  abstract portfolio: {
+    findById: (id: string) => Promise<Portfolio | null>;
+    findByUserId: (userId: string) => Promise<Portfolio[]>;
+    create: (portfolio: Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Portfolio>;
+    update: (id: string, portfolio: Partial<Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>>) => Promise<Portfolio>;
+    delete: (id: string) => Promise<void>;
+    count: (userId: string) => Promise<number>;
+  };
+  abstract holding: {
+    findById: (id: string) => Promise<Holding | null>;
+    findByPortfolioId: (portfolioId: string) => Promise<Holding[]>;
+    findBySymbol: (portfolioId: string, symbol: string) => Promise<Holding | null>;
+    create: (holding: Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Holding>;
+    update: (id: string, holding: Partial<Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>>) => Promise<Holding>;
+    delete: (id: string) => Promise<void>;
+    updatePrices: (updates: { symbol: string; price: number }[]) => Promise<void>;
+  };
   abstract verificationToken: {
     create: (data: { identifier: string; token: string; expires: Date }) => Promise<void>;
     find: (
@@ -75,6 +92,12 @@ export abstract class DatabaseClient implements ConfigurableService {
     ) => Promise<{ identifier: string; token: string; expires: Date } | null>;
     delete: (identifier: string, token: string) => Promise<void>;
     deleteExpired: (now: Date) => Promise<void>;
+  };
+  abstract priceCache: {
+    findBySymbol: (symbol: string) => Promise<PriceCache | null>;
+    upsert: (data: Omit<PriceCache, 'id' | 'createdAt'>) => Promise<PriceCache>;
+    deleteBySymbol: (symbol: string) => Promise<void>;
+    deleteAll: () => Promise<void>;
   };
   abstract checkConnection(): Promise<boolean>;
 
