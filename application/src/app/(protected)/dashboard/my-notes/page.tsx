@@ -1,11 +1,11 @@
 'use client';
 
-import MyNotes from 'components/MyNotes/MyNotesPage';
+import PortfolioDashboard from 'components/Portfolio/PortfolioDashboard';
 
 /**
- * MyNotesPage component
- * @returns MyNotesPage component
+ * PortfolioDashboard Page - Main dashboard for managing investment portfolios
+ * @returns PortfolioDashboard component
  */
-export default function MyNotesPage() {
-  return <MyNotes />;
+export default function PortfolioPage() {
+  return <PortfolioDashboard />;
 }

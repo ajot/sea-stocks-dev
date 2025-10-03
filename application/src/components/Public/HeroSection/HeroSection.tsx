@@ -44,7 +44,7 @@ const HeroSection = () => {
                 width: '100%'
               }}
             >
-              SeaNotes
+              SeaStocks
             </Typography>
             <Typography 
               variant="h3" 

@@ -1,4 +1,4 @@
-# SeaNotes – SaaS Starter Kit built with DigitalOcean
+# SeaStocks – SaaS Starter Kit built with DigitalOcean
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
@@ -12,18 +12,18 @@
 
 ![alt text](docs/images/starter_kit_integrations.png)
 
-**SeaNotes** is a SaaS Starter Kit — a simple, production-ready notes app built with modern tools and fully integrated with DigitalOcean services.
+**SeaStocks** is a SaaS Starter Kit — a simple, production-ready stock tracking app built with modern tools and fully integrated with DigitalOcean services.
 
 This repository gives you everything you need to build and launch a real SaaS app on DigitalOcean App Platform. It’s designed to help you get started fast — whether you’re developing locally or deploying to the cloud. SeaNotes includes a complete implementation of a notes app to show how common SaaS features like auth, billing, and storage come together using DO’s infrastructure.
 
-SeaNotes comes pre-integrated with:
+SeaStocks comes pre-integrated with:
 - **Stripe** for subscription billing and payments
 - **Resend** for transactional emails
 - **DigitalOcean Spaces** for file storage
 - **PostgreSQL** for database
 - **One-click deployment** to DigitalOcean App Platform
 
-You can use SeaNotes in two ways:
+You can use SeaStocks in two ways:
 1. As a **starter kit** to build your own SaaS application by replacing the notes functionality with your business logic
 2. As a **reference app** by pointing your LLMs (like ChatGPT or Claude) to this codebase to understand how to implement similar features in your own projects
 
@@ -31,7 +31,7 @@ You can use SeaNotes in two ways:
 
 ## Quick Deploy
 
-Want to try it out right away? Deploy SeaNotes to DigitalOcean App Platform in one click:
+Want to try it out right away? Deploy SeaStocks to DigitalOcean App Platform in one click:
 
 [![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/digitalocean/sea-notes-saas-starter-kit/tree/main)
 
@@ -50,7 +50,7 @@ This is a production-ready SaaS Starter Kit for developers who want to build and
 - ✅ Admin dashboard for managing users and subscriptions 
 - ✅ One-click deploy to DO App Platform
 
-SeaNotes is both a clean, flexible starting point for your own SaaS and a real-world example of best practices, and how all the core pieces fit together on DigitalOcean.
+SeaStocks is both a clean, flexible starting point for your own SaaS and a real-world example of best practices, and how all the core pieces fit together on DigitalOcean.
 
 The included notes app functionality serves as a practical example of how to build business logic on top of this foundation. It also works really well with tools like ChatGPT or Claude. You can literally point your LLM at this repo and say:
 
@@ -82,7 +82,7 @@ The included notes app functionality serves as a practical example of how to bui
 
 ## Get Started
 
-SeaNotes can be run [locally](#quick-start-local-development) or on [DigitalOcean App Platform](#part-5-deploy-to-digitalocean-app-platform). Follow the steps for each case below.
+SeaStocks can be run [locally](#quick-start-local-development) or on [DigitalOcean App Platform](#part-5-deploy-to-digitalocean-app-platform). Follow the steps for each case below.
 
 > **Important**: The app works out of the box with basic authentication and signup. However, to enable full functionality:
 >
@@ -190,7 +190,7 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## First Things to Try
 
-The basic version of SeaNotes is now set up locally on your computer! You can start exploring and playing around with the app right away:
+The basic version of SeaStocks is now set up locally on your computer! You can start exploring and playing around with the app right away:
 
 1. **Sign up** for a new account
 
@@ -298,7 +298,7 @@ The Resend integration supports:
 
 ## Part 3: Set Up File Storage (DigitalOcean Spaces)
 
-Most SaaS apps need a way to store user files—like profile images, uploads, or documents. SeaNotes uses DigitalOcean Spaces for file storage, which is a scalable, S3-compatible solution. For example, the profile image feature in this kit is designed to work with a Spaces bucket out of the box.
+Most SaaS apps need a way to store user files—like profile images, uploads, or documents. SeaStocks uses DigitalOcean Spaces for file storage, which is a scalable, S3-compatible solution. For example, the profile image feature in this kit is designed to work with a Spaces bucket out of the box.
 
 To enable file uploads, you'll need to set up a DigitalOcean Spaces bucket and add your credentials to your `.env` file.
 
@@ -373,7 +373,7 @@ To enable file uploads, you'll need to set up a DigitalOcean Spaces bucket and a
 
 ## Part 4: Set Up Stripe for Billing and Subscriptions
 
-SeaNotes includes a complete subscription billing system powered by Stripe. Setting up Stripe allows you to:
+SeaStocks includes a complete subscription billing system powered by Stripe. Setting up Stripe allows you to:
 
 - Offer free and paid subscription tiers
 - Process payments securely
@@ -420,7 +420,7 @@ SeaNotes includes a complete subscription billing system powered by Stripe. Sett
 
 ## Part 5: Set Up AI Features (DigitalOcean Inference API)
 
-SeaNotes includes AI-powered features that enhance the note-taking experience using DigitalOcean's Inference API. These features are completely optional - your app works perfectly without them, but they add intelligent automation when enabled.
+SeaStocks includes AI-powered features that enhance the stock tracking experience using DigitalOcean's Inference API. These features are completely optional - your app works perfectly without them, but they add intelligent automation when enabled.
 
 ### AI Features Included:
 
@@ -482,7 +482,7 @@ SeaNotes includes AI-powered features that enhance the note-taking experience us
 
 ## Part 6: Deploy to DigitalOcean App Platform
 
-SeaNotes is designed to deploy seamlessly to DigitalOcean App Platform. You have two options for deployment:
+SeaStocks is designed to deploy seamlessly to DigitalOcean App Platform. You have two options for deployment:
 
 ### Option A: Deploy with One-Click Deployment Button
 

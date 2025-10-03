@@ -80,7 +80,7 @@ export function InvoiceEmail({
             If you have any questions about this invoice, please contact us at {fromEmail}.
           </Text>
           <Text style={{ fontSize: 14, color: '#666', textAlign: 'center', margin: '8px 0 0 0' }}>
-            Thank you for choosing SeaNotes!
+            Thank you for choosing SeaStocks!
           </Text>
         </Section>
       </Container>

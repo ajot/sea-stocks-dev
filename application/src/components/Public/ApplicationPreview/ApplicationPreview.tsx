@@ -23,7 +23,7 @@ const ApplicationPreview = () => {
           }}>
             <Box 
               component="figure" 
-              aria-label="SeaNotes application interface mockup"
+              aria-label="SeaStocks application interface mockup"
               sx={{ 
                 bgcolor: 'background.paper', 
                 borderRadius: 3, 
@@ -49,7 +49,7 @@ const ApplicationPreview = () => {
                 <Box sx={{ width: DIMENSIONS.terminalDot.width, height: DIMENSIONS.terminalDot.height, borderRadius: '50%', bgcolor: '#ffbd2e' }} />
                 <Box sx={{ width: DIMENSIONS.terminalDot.width, height: DIMENSIONS.terminalDot.height, borderRadius: '50%', bgcolor: '#27ca3f' }} />
                 <Typography variant="body2" sx={{ color: 'grey.400', ml: 2, fontFamily: 'monospace' }}>
-                  SeaNotes - localhost:3000
+                  SeaStocks - localhost:3000
                 </Typography>
               </Box>
               
@@ -68,7 +68,7 @@ const ApplicationPreview = () => {
                 }}>
                   <Stack spacing={DIMENSIONS.spacing.small}>
                     <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-                      🐳 SeaNotes
+                      🐳 SeaStocks
                     </Typography>
                     <Box sx={{ height: 1, bgcolor: 'divider', my: 1 }} />
                     <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>

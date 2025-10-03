@@ -102,7 +102,7 @@ const NavBar = () => {
               fontWeight={700}
               sx={{ cursor: 'pointer' }}
             >
-              🐳 SeaNotes
+              🐳 SeaStocks
             </Typography>
           </Link>
 

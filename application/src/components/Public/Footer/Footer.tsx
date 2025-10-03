@@ -109,7 +109,7 @@ export default function Footer() {
         
         <Box sx={{ pt: DIMENSIONS.spacing.container, borderTop: `1px solid ${theme.palette.divider}`, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            © 2025 SeaNotes. Built with ❤️ using DigitalOcean services.
+            © 2025 SeaStocks. Built with ❤️ using DigitalOcean services.
           </Typography>
         </Box>
       </Container>

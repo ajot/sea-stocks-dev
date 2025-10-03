@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import {
   Person,
-  Receipt,
+  AccountBalance,
   Settings,
   CreditCard,
   Logout,
@@ -88,7 +88,7 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
     <>
       <SidebarHeader justifyContent="space-between">
         <Typography variant="h5" fontWeight={600}>
-          🐳 SeaNotes
+          📊 SeaFolio
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>{getProfileIcon()}</Box>
       </SidebarHeader>
@@ -100,10 +100,10 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
           </SidebarLink>
           <SidebarLink
             href="/dashboard/my-notes"
-            icon={<Receipt fontSize="small" />}
+            icon={<AccountBalance fontSize="small" />}
             onClick={onNavigate}
           >
-            My Notes
+            My Portfolios
           </SidebarLink>
         </List>
       </Box>

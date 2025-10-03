@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         title="Login to your account"
         buttonUrl={verifyUrl}
         buttonText="Login"
-        greetingText="Hi, You can login to your SeaNotes account by clicking the button below:"
+        greetingText="Hi, You can login to your SeaStocks account by clicking the button below:"
         fallbackText="If the button above does not work, copy and paste the following link into your browser:"
         fallbackUrlLabel={verifyUrl}
       />

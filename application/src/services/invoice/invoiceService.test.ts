@@ -130,7 +130,7 @@ describe('InvoiceService', () => {
 
       const result = await invoiceService.generateInvoice(mockInvoiceData);
 
-      expect(result.html).toContain('SeaNotes');
+      expect(result.html).toContain('SeaStocks');
       expect(result.html).toContain('John Doe');
       expect(result.html).toContain('Pro Plan');
       expect(result.text).toContain('INVOICE - INV-20240101-0001');
@@ -142,7 +142,7 @@ describe('InvoiceService', () => {
 
       const result = await invoiceService.generateInvoice(mockInvoiceData);
 
-      expect(result.html).toContain('SeaNotes');
+      expect(result.html).toContain('SeaStocks');
       expect(result.html).toContain('John Doe');
       expect(result.html).toContain('Pro Plan');
       expect(result.text).toContain('INVOICE - INV-20240101-0001');

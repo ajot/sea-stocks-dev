@@ -143,7 +143,7 @@ Invoice Details:
 - Subscription ID: ${invoiceData.subscriptionId}
 
 Please create a professional invoice with:
-1. Company header with "SeaNotes" branding
+1. Company header with "SeaStocks" branding
 2. Customer and invoice details clearly displayed
 3. Itemized breakdown of the subscription
 4. Professional styling with blue color scheme (#0061EB)
@@ -189,7 +189,7 @@ function generateFallbackInvoice(invoiceData) {
     <body>
       <div class="container">
         <div class="header">
-          <h1>SeaNotes</h1>
+          <h1>SeaStocks</h1>
           <h2>Invoice</h2>
         </div>
         <div class="content">
@@ -234,7 +234,7 @@ function generateFallbackInvoice(invoiceData) {
 
   const text = `
 INVOICE - ${invoiceData.invoiceNumber}
-SeaNotes
+SeaStocks
 
 Invoice Date: ${invoiceData.invoiceDate.toLocaleDateString()}
 

@@ -100,7 +100,7 @@ export const handleSubscriptionUpdated = async (json: any) => {
                 planName={currentPlan.name}
                 amount={currentPlan.amount}
                 invoiceNumber={invoiceData.invoiceNumber}
-                fromEmail={serverConfig.Resend.fromEmail || 'support@seanotes.com'}
+                fromEmail={serverConfig.Resend.fromEmail || 'support@seastocks.com'}
               />
             );
             

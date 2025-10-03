@@ -15,7 +15,7 @@ export function emailTemplate({ title, content }: { title: string; content: stri
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
             <td align="center" bgcolor="#0061EB" style="padding: 48px 0 36px 0;">
-                <h1 style="color: #fff; margin: 0; font-size: 1.5rem; font-family: Arial, Helvetica, sans-serif;">SeaNotes - ${title}</h1>
+                <h1 style="color: #fff; margin: 0; font-size: 1.5rem; font-family: Arial, Helvetica, sans-serif;">SeaStocks - ${title}</h1>
             </td>
             </tr>
             <tr>

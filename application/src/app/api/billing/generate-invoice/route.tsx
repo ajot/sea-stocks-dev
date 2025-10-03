@@ -174,7 +174,7 @@ async function generateInvoiceHandler(
           planName={selectedPlan.name}
           amount={selectedPlan.amount}
           invoiceNumber={invoiceData.invoiceNumber}
-          fromEmail={serverConfig.Resend.fromEmail || 'support@seanotes.com'}
+          fromEmail={serverConfig.Resend.fromEmail || 'support@seastocks.com'}
         />,
         attachments
       );
