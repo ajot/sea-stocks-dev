@@ -65,7 +65,11 @@ export const editHolding = async (
     }
 
     // Update the holding
-    const updateData: any = {};
+    const updateData: Partial<{
+      shares: number;
+      costBasis: number;
+      purchaseDate: Date;
+    }> = {};
     if (shares !== undefined) updateData.shares = shares;
     if (costBasis !== undefined) updateData.costBasis = costBasis;
     if (purchaseDate !== undefined) updateData.purchaseDate = new Date(purchaseDate);

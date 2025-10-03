@@ -65,7 +65,7 @@ export const editPortfolio = async (
     // Update the portfolio
     const updateData: Partial<EditPortfolioRequest> = {};
     if (body.name !== undefined) updateData.name = body.name.trim();
-    if (body.description !== undefined) updateData.description = body.description?.trim() || null;
+    if (body.description !== undefined) updateData.description = body.description?.trim() || undefined;
     if (body.type !== undefined) updateData.type = body.type;
 
     const portfolio = await dbClient.portfolio.update(portfolioId, updateData);

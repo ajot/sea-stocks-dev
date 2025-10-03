@@ -15,6 +15,9 @@ export interface CompanyInfo {
   marketCap?: number;
 }
 
+/**
+ * Abstract base class for market data services
+ */
 export abstract class MarketDataService {
   abstract getQuote(symbol: string): Promise<StockQuote | null>;
   abstract getMultipleQuotes(symbols: string[]): Promise<StockQuote[]>;

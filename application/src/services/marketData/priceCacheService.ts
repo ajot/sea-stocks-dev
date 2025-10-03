@@ -1,6 +1,9 @@
 import { createDatabaseService } from '../database/databaseFactory';
 import { StockQuote } from './marketDataService';
 
+/**
+ * Service for caching stock price data to reduce API calls
+ */
 export class PriceCacheService {
   private cacheExpiryMinutes: number;
 

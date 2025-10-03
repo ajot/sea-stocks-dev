@@ -1,8 +1,14 @@
 import { DatabaseClient } from './database';
 import { prisma } from '../../lib/prisma';
-import { Subscription, Note, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PortfolioType, PriceCache } from 'types';
+import { Subscription, Note, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PriceCache } from 'types';
 import { PrismaClient } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 import { ServiceConfigStatus } from '../status/serviceConfigStatus';
+
+// Helper function to convert Decimal to number
+const convertDecimalToNumber = (value: Decimal | null): number | null => {
+  return value ? value.toNumber() : null;
+};
 
 /**
  * Service for interacting with the SQL database using Prisma.
@@ -132,23 +138,26 @@ export class SqlDatabaseService extends DatabaseClient {
       await prisma.subscription.delete({ where: { id } });
     },
   };
+  // Note: The note table has been removed from the schema in favor of portfolios
+  // This is a placeholder to maintain compatibility with the DatabaseClient interface
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   note = {
-    findById: async (id: string): Promise<Note | null> => {
-      return prisma.note.findUnique({ where: { id } });
+    findById: async (_id: string): Promise<Note | null> => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    findByUserId: async (userId: string): Promise<Note[]> => {
-      return prisma.note.findMany({ where: { userId } });
+    findByUserId: async (_userId: string): Promise<Note[]> => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    create: async (note: Omit<Note, 'id' | 'createdAt'>): Promise<Note> => {
-      return prisma.note.create({ data: note });
+    create: async (_note: Omit<Note, 'id' | 'createdAt'>): Promise<Note> => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    update: async (id: string, note: Partial<Omit<Note, 'id' | 'createdAt'>>): Promise<Note> => {
-      return prisma.note.update({ where: { id }, data: note });
+    update: async (_id: string, _note: Partial<Omit<Note, 'id' | 'createdAt'>>): Promise<Note> => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    delete: async (id: string): Promise<void> => {
-      await prisma.note.delete({ where: { id } });
+    delete: async (_id: string): Promise<void> => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    findMany: async (args: {
+    findMany: async (_args: {
       userId: string;
       search?: string;
       skip: number;
@@ -158,40 +167,13 @@ export class SqlDatabaseService extends DatabaseClient {
         title?: 'asc';
       };
     }) => {
-      const { userId, search, skip, take, orderBy } = args;
-      return prisma.note.findMany({
-        where: {
-          userId,
-          ...(search
-            ? {
-                OR: [
-                  { title: { contains: search, mode: 'insensitive' } },
-                  { content: { contains: search, mode: 'insensitive' } },
-                ],
-              }
-            : {}),
-        },
-        skip,
-        take,
-        orderBy,
-      });
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
-    count: async (userId: string, search?: string) => {
-      return prisma.note.count({
-        where: {
-          userId,
-          ...(search
-            ? {
-                OR: [
-                  { title: { contains: search, mode: 'insensitive' } },
-                  { content: { contains: search, mode: 'insensitive' } },
-                ],
-              }
-            : {}),
-        },
-      });
+    count: async (_userId: string, _search?: string) => {
+      throw new Error('Note functionality has been removed. Use portfolios instead.');
     },
   };
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   portfolio = {
     findById: async (id: string) => {
@@ -222,27 +204,63 @@ export class SqlDatabaseService extends DatabaseClient {
 
   holding = {
     findById: async (id: string) => {
-      return prisma.holding.findUnique({ where: { id } });
+      const result = await prisma.holding.findUnique({ where: { id } });
+      if (!result) return null;
+      
+      return {
+        ...result,
+        shares: result.shares.toNumber(),
+        costBasis: result.costBasis.toNumber(),
+        currentPrice: convertDecimalToNumber(result.currentPrice)
+      };
     },
     findByPortfolioId: async (portfolioId: string) => {
-      return prisma.holding.findMany({ 
+      const results = await prisma.holding.findMany({ 
         where: { portfolioId },
         orderBy: { createdAt: 'desc' }
       });
+      
+      return results.map(result => ({
+        ...result,
+        shares: result.shares.toNumber(),
+        costBasis: result.costBasis.toNumber(),
+        currentPrice: convertDecimalToNumber(result.currentPrice)
+      }));
     },
     findBySymbol: async (portfolioId: string, symbol: string) => {
-      return prisma.holding.findUnique({
+      const result = await prisma.holding.findUnique({
         where: { portfolioId_symbol: { portfolioId, symbol } }
       });
+      
+      if (!result) return null;
+      
+      return {
+        ...result,
+        shares: result.shares.toNumber(),
+        costBasis: result.costBasis.toNumber(),
+        currentPrice: convertDecimalToNumber(result.currentPrice)
+      };
     },
     create: async (holding: Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>) => {
-      return prisma.holding.create({ data: holding });
+      const result = await prisma.holding.create({ data: holding });
+      return {
+        ...result,
+        shares: result.shares.toNumber(),
+        costBasis: result.costBasis.toNumber(),
+        currentPrice: convertDecimalToNumber(result.currentPrice)
+      };
     },
     update: async (id: string, holding: Partial<Omit<Holding, 'id' | 'createdAt' | 'updatedAt'>>) => {
-      return prisma.holding.update({ 
+      const result = await prisma.holding.update({ 
         where: { id }, 
         data: holding 
       });
+      return {
+        ...result,
+        shares: result.shares.toNumber(),
+        costBasis: result.costBasis.toNumber(),
+        currentPrice: convertDecimalToNumber(result.currentPrice)
+      };
     },
     delete: async (id: string) => {
       await prisma.holding.delete({ where: { id } });
@@ -284,12 +302,22 @@ export class SqlDatabaseService extends DatabaseClient {
 
   priceCache = {
     findBySymbol: async (symbol: string): Promise<PriceCache | null> => {
-      return prisma.priceCache.findUnique({
+      const result = await prisma.priceCache.findUnique({
         where: { symbol: symbol.toUpperCase() }
       });
+      
+      if (!result) return null;
+      
+      return {
+        ...result,
+        price: result.price.toNumber(),
+        change: result.change.toNumber(),
+        changePercent: result.changePercent.toNumber(),
+        volume: Number(result.volume)
+      };
     },
     upsert: async (data: Omit<PriceCache, 'id' | 'createdAt'>): Promise<PriceCache> => {
-      return prisma.priceCache.upsert({
+      const result = await prisma.priceCache.upsert({
         where: { symbol: data.symbol.toUpperCase() },
         update: {
           price: data.price,
@@ -307,6 +335,14 @@ export class SqlDatabaseService extends DatabaseClient {
           lastUpdated: data.lastUpdated
         }
       });
+      
+      return {
+        ...result,
+        price: result.price.toNumber(),
+        change: result.change.toNumber(),
+        changePercent: result.changePercent.toNumber(),
+        volume: Number(result.volume)
+      };
     },
     deleteBySymbol: async (symbol: string): Promise<void> => {
       await prisma.priceCache.delete({

@@ -1,4 +1,4 @@
-import { Note, Subscription, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PortfolioType, PriceCache } from 'types';
+import { Note, Subscription, User, UserWithSubscriptions, SubscriptionStatus, Portfolio, Holding, PriceCache } from 'types';
 import { ServiceConfigStatus, ConfigurableService } from '../status/serviceConfigStatus';
 
 export type DatabaseProvider = 'Postgres';

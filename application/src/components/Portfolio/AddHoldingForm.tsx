@@ -6,7 +6,6 @@ import {
   TextField,
   Button,
   Typography,
-  Grid,
   Alert,
   CircularProgress,
   Autocomplete
@@ -27,8 +26,14 @@ interface AddHoldingFormProps {
   onCancel: () => void;
 }
 
+/**
+ * Form component for adding new holdings to a portfolio
+ * @param props - Component props
+ * @param props.portfolioId - The ID of the portfolio to add holdings to
+ * @param props.onSave - Callback function when holding is saved
+ * @param props.onCancel - Callback function when form is cancelled
+ */
 const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
-  portfolioId,
   onSave,
   onCancel
 }) => {
@@ -51,7 +56,7 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
       try {
         // Validate symbol by trying to get a quote
         await apiClient.getStockQuote(value.toUpperCase());
-      } catch (err) {
+      } catch {
         if (value.length >= 3) { // Only show error for longer symbols
           setError('Invalid stock symbol');
         }
@@ -84,8 +89,9 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
 
     try {
       await onSave(formData);
-    } catch (err: any) {
-      setError(err.message || 'Failed to add holding');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to add holding';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -113,8 +119,8 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
           </Alert>
         )}
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <Autocomplete
               options={POPULAR_SYMBOLS}
               freeSolo
@@ -140,9 +146,9 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
                 />
               )}
             />
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6}>
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <TextField
               label="Number of Shares"
               type="number"
@@ -155,9 +161,9 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
               }))}
               inputProps={{ min: 0, step: 0.001 }}
             />
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6}>
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <TextField
               label="Cost Basis (Price per Share)"
               type="number"
@@ -173,9 +179,9 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
                 startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>
               }}
             />
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6}>
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <TextField
               label="Purchase Date"
               type="date"
@@ -188,9 +194,9 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
               }))}
               InputLabelProps={{ shrink: true }}
             />
-          </Grid>
+          </Box>
 
-          <Grid item xs={12}>
+          <Box sx={{ width: '100%' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
               <Typography variant="body2" color="textSecondary">
                 Total Investment: ${(formData.shares * formData.costBasis).toLocaleString('en-US', { 
@@ -199,8 +205,8 @@ const AddHoldingForm: React.FC<AddHoldingFormProps> = ({
                 })}
               </Typography>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'flex-end' }}>
           <Button variant="outlined" onClick={handleReset} disabled={loading}>

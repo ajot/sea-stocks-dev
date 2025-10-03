@@ -1,6 +1,9 @@
 import { MarketDataService, StockQuote, CompanyInfo } from './marketDataService';
 import { priceCacheService } from './priceCacheService';
 
+/**
+ * AlphaVantage API service implementation for market data
+ */
 export class AlphaVantageService extends MarketDataService {
   private apiKey: string | undefined;
   private baseUrl = 'https://www.alphavantage.co/query';
@@ -166,7 +169,7 @@ export class AlphaVantageService extends MarketDataService {
       }
 
       const matches = data['bestMatches'] || [];
-      return matches.slice(0, 10).map((match: any) => ({
+      return matches.slice(0, 10).map((match: Record<string, string>) => ({
         symbol: match['1. symbol'],
         name: match['2. name']
       }));

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Box,
   Typography,
@@ -18,7 +18,6 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Grid,
   Divider,
   CircularProgress,
   Alert,
@@ -41,6 +40,15 @@ interface PortfolioDetailsProps {
   onPricesUpdated?: () => void;
 }
 
+/**
+ * Component for displaying detailed portfolio information and holdings
+ * @param props - Component props
+ * @param props.portfolio - The portfolio to display
+ * @param props.onAddHolding - Callback for adding a new holding
+ * @param props.onEditHolding - Callback for editing a holding
+ * @param props.onDeleteHolding - Callback for deleting a holding
+ * @param props.onPricesUpdated - Callback when prices are updated
+ */
 const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
   portfolio,
   onAddHolding,
@@ -55,7 +63,7 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('info');
 
-  const portfoliosApi = new PortfoliosApiClient();
+  const portfoliosApi = useMemo(() => new PortfoliosApiClient(), []);
 
   // Auto-refresh prices on mount if portfolio has holdings
   useEffect(() => {
@@ -80,7 +88,7 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
     };
 
     autoRefreshPrices();
-  }, [portfolio.id]); // Only run when portfolio changes
+  }, [portfolio.id, portfolio.holdings, onPricesUpdated, portfoliosApi]); // Include all dependencies
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, holdingId: string) => {
     setAnchorEl(event.currentTarget);
@@ -185,8 +193,8 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
         )}
 
         {/* Portfolio Performance Summary */}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -197,9 +205,9 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          
-          <Grid item xs={12} md={4}>
+          </Box>
+
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -210,9 +218,9 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          
-          <Grid item xs={12} md={4}>
+          </Box>
+
+          <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <Card sx={{ 
               bgcolor: isPortfolioPositive ? 'success.light' : 'error.light',
               color: isPortfolioPositive ? 'success.contrastText' : 'error.contrastText'
@@ -232,8 +240,8 @@ const PortfolioDetails: React.FC<PortfolioDetailsProps> = ({
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
 
       <Divider sx={{ my: 3 }} />

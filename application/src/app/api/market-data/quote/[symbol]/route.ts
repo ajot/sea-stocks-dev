@@ -2,6 +2,11 @@ import { HTTP_STATUS } from 'lib/api/http';
 import { NextRequest, NextResponse } from 'next/server';
 import { marketDataService } from 'services/marketData/marketDataFactory';
 
+/**
+ * GET handler for fetching stock quotes by symbol
+ * @param request - The NextRequest object containing the symbol parameter
+ * @returns NextResponse with quote data or error
+ */
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);

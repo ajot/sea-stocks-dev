@@ -6,7 +6,6 @@ import {
   TextField,
   Button,
   Typography,
-  Grid,
   Alert,
   FormControl,
   InputLabel,
@@ -20,6 +19,12 @@ interface CreatePortfolioFormProps {
   onCancel: () => void;
 }
 
+/**
+ * Form component for creating new portfolios
+ * @param props - Component props
+ * @param props.onSave - Callback function when portfolio is saved
+ * @param props.onCancel - Callback function when form is cancelled
+ */
 const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
   onSave,
   onCancel
@@ -59,8 +64,9 @@ const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
       }
 
       await onSave(submitData);
-    } catch (err: any) {
-      setError(err.message || 'Failed to create portfolio');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create portfolio';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -91,8 +97,8 @@ const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
         </Alert>
       )}
 
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box>
           <TextField
             label="Portfolio Name"
             required
@@ -103,14 +109,14 @@ const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
             inputProps={{ maxLength: 100 }}
             helperText={`${formData.name.length}/100 characters`}
           />
-        </Grid>
+        </Box>
 
-        <Grid item xs={12}>
+        <Box>
           <FormControl fullWidth>
             <InputLabel>Portfolio Type</InputLabel>
             <Select
               value={formData.type}
-              onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as any }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as 'PERSONAL' | 'RETIREMENT' | 'TAXABLE' | 'OTHER' }))}
               label="Portfolio Type"
             >
               <MenuItem value="PERSONAL">Personal</MenuItem>
@@ -119,9 +125,9 @@ const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
               <MenuItem value="OTHER">Other</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12}>
+        <Box>
           <TextField
             label="Description (Optional)"
             fullWidth
@@ -133,8 +139,8 @@ const CreatePortfolioForm: React.FC<CreatePortfolioFormProps> = ({
             inputProps={{ maxLength: 500 }}
             helperText={`${formData.description?.length || 0}/500 characters`}
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'flex-end' }}>
         <Button variant="outlined" onClick={handleReset} disabled={loading}>

@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
-  Grid, 
   Card, 
   CardContent, 
   Typography, 
@@ -40,7 +39,7 @@ const PortfolioDashboard: React.FC = () => {
   // Modal states
   const [isCreatePortfolioOpen, setIsCreatePortfolioOpen] = useState(false);
   const [isPortfolioDetailsOpen, setIsPortfolioDetailsOpen] = useState(false);
-  const [isEditPortfolioOpen, setIsEditPortfolioOpen] = useState(false);
+  // const [isEditPortfolioOpen, setIsEditPortfolioOpen] = useState(false);
   const [isAddHoldingOpen, setIsAddHoldingOpen] = useState(false);
   const [selectedPortfolioForHolding, setSelectedPortfolioForHolding] = useState<string | null>(null);
   
@@ -203,9 +202,10 @@ const PortfolioDashboard: React.FC = () => {
       setToastMessage('Holding added successfully');
       setToastSeverity('success');
       setToastOpen(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error creating holding:', err);
-      setToastMessage(err.message || 'Failed to add holding');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to add holding';
+      setToastMessage(errorMessage);
       setToastSeverity('error');
       setToastOpen(true);
     }
@@ -228,7 +228,7 @@ const PortfolioDashboard: React.FC = () => {
       setToastMessage('Holding deleted successfully');
       setToastSeverity('success');
       setToastOpen(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error deleting holding:', err);
       setToastMessage('Failed to delete holding');
       setToastSeverity('error');
@@ -290,13 +290,13 @@ const PortfolioDashboard: React.FC = () => {
           </Button>
         </Box>
       ) : (
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
           {portfolios.map((portfolio) => {
             const { totalValue, gainLoss, gainLossPercent } = calculatePortfolioValue(portfolio);
             const isPositive = gainLoss >= 0;
             
             return (
-              <Grid item xs={12} sm={6} md={4} key={portfolio.id}>
+              <Box key={portfolio.id} sx={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '400px' }}>
                 <Card 
                   sx={{ 
                     cursor: 'pointer',
@@ -355,10 +355,10 @@ const PortfolioDashboard: React.FC = () => {
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             );
           })}
-        </Grid>
+        </Box>
       )}
 
       {/* Portfolio Actions Menu */}

@@ -1,6 +1,9 @@
 import { MarketDataService } from './marketDataService';
 import { AlphaVantageService } from './alphaVantageService';
 
+/**
+ * Factory class for creating market data service instances
+ */
 export class MarketDataFactory {
   private static instance: MarketDataService | null = null;
 
